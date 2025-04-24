@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ModelSelector from "@/components/settings/ModelSelector";
 import APIConfiguration from "@/components/settings/APIConfiguration";
 import SettingsToggle from "@/components/settings/SettingsToggle";
+import APIStatus from "@/components/settings/APIStatus";
 
 interface SettingsPanelProps {
   currentModel: string;
@@ -27,6 +28,14 @@ const SettingsPanel = ({
     { id: "advanced-settings", label: "Advanced settings", checked: false },
   ];
 
+  const apiConnections = [
+    { provider: "Google AI (Gemini)", status: "not_set" },
+    { provider: "Google Vertex AI", status: "not_set" },
+    { provider: "Azure OpenAI", status: "not_set" },
+    { provider: "AWS Bedrock", status: "not_set" },
+    { provider: "OpenAI API", status: "connected" },
+  ] as const;
+
   return (
     <div className="w-72 bg-gray-950 border-l border-gray-800 overflow-y-auto">
       <ModelSelector
@@ -43,32 +52,9 @@ const SettingsPanel = ({
 
       <SettingsToggle settings={settings} />
 
-      <div className="p-4 border-t border-gray-800">
-        <h3 className="text-sm font-medium mb-4">API Keys</h3>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">Google AI (Gemini)</span>
-          <span className="text-xs text-gray-500">Not set</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">Google Vertex AI</span>
-          <span className="text-xs text-gray-500">Not set</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">Azure OpenAI</span>
-          <span className="text-xs text-gray-500">Not set</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">AWS Bedrock</span>
-          <span className="text-xs text-gray-500">Not set</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">OpenAI API</span>
-          <span className="text-xs text-green-500">Connected</span>
-        </div>
-      </div>
+      <APIStatus connections={apiConnections} />
     </div>
   );
 };
 
 export default SettingsPanel;
-
