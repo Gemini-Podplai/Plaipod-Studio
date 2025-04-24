@@ -35,44 +35,55 @@ const SettingsPanel = ({
 
   const modelOptions = [
     {
-      provider: "Google",
+      provider: "Google Vertex AI & Gemini",
       models: [
-        "Gemini Pro 1.0",
-        "Gemini Ultra 1.0",
-        "Gemini 1.5 Pro", 
-        "Gemini 1.5 Flash"
+        "Gemini 2.5 Pro Preview",
+        "Gemini 2.5 Flash Preview",
+        "Gemini 2.0 Flash Live",
+        "Gemini 2.0 Pro",
+        "Gemini 2.0 Flash",
+        "Gemini 2.0 Flash-Lite",
+        "Veo 2.0",
+        "Gemma 3 27B",
+        "Gemini Embedding"
       ]
     },
     {
-      provider: "Anthropic (via Vertex AI)",
+      provider: "Microsoft Azure OpenAI",
       models: [
-        "Claude 3 Opus",
-        "Claude 3 Sonnet",
-        "Claude 3 Haiku"
+        "GPT-4.1",
+        "GPT-4.1 Nano",
+        "GPT-4o",
+        "GPT-4o Mini",
+        "O4-Mini",
+        "O3",
+        "O3-Mini",
+        "O1"
       ]
     },
     {
-      provider: "OpenAI (via Azure)",
+      provider: "Amazon Bedrock - Nova",
       models: [
-        "GPT-4",
-        "GPT-4 Turbo",
-        "GPT-3.5 Turbo"
+        "Nova Premier",
+        "Nova Pro",
+        "Nova Lite",
+        "Nova Micro",
+        "Nova Canvas",
+        "Nova Reel"
       ]
     },
     {
-      provider: "AWS Bedrock",
-      models: [
-        "Titan Text",
-        "Claude 3 Sonnet (Bedrock)",
-        "Claude 3 Haiku (Bedrock)",
+      provider: "Amazon Bedrock - Partners",
+      models: [  
+        "Claude 3",
+        "Llama 4 Scout 17B",
+        "Llama 4 Maverick 17B",
         "Mistral Large",
-        "Llama 3 70B"
-      ]
-    },
-    {
-      provider: "Other",
-      models: [
-        "Cosmos Pro 1.5"
+        "Jurassic-2 Ultra",
+        "Jurassic-2 Mid",
+        "Cohere Command",
+        "Cohere Command Light",
+        "Stability SDXL 1.0"
       ]
     }
   ];
