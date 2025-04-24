@@ -1,5 +1,14 @@
 
-import React from "react";
+import React, { useState } from "react";
+import { 
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 interface SettingsPanelProps {
   currentModel: string;
@@ -14,6 +23,8 @@ const SettingsPanel = ({
   temperature,
   setTemperature,
 }: SettingsPanelProps) => {
+  const [showApiConfig, setShowApiConfig] = useState<boolean>(false);
+  
   const settings = [
     { id: "stream-output", label: "Streaming output", checked: true },
     { id: "code-animation", label: "Code animation", checked: false },
@@ -22,20 +33,75 @@ const SettingsPanel = ({
     { id: "advanced-settings", label: "Advanced settings", checked: false },
   ];
 
+  const modelOptions = [
+    {
+      provider: "Google",
+      models: [
+        "Gemini Pro 1.0",
+        "Gemini Ultra 1.0",
+        "Gemini 1.5 Pro", 
+        "Gemini 1.5 Flash"
+      ]
+    },
+    {
+      provider: "Anthropic (via Vertex AI)",
+      models: [
+        "Claude 3 Opus",
+        "Claude 3 Sonnet",
+        "Claude 3 Haiku"
+      ]
+    },
+    {
+      provider: "OpenAI (via Azure)",
+      models: [
+        "GPT-4",
+        "GPT-4 Turbo",
+        "GPT-3.5 Turbo"
+      ]
+    },
+    {
+      provider: "AWS Bedrock",
+      models: [
+        "Titan Text",
+        "Claude 3 Sonnet (Bedrock)",
+        "Claude 3 Haiku (Bedrock)",
+        "Mistral Large",
+        "Llama 3 70B"
+      ]
+    },
+    {
+      provider: "Other",
+      models: [
+        "Cosmos Pro 1.5"
+      ]
+    }
+  ];
+
   return (
     <div className="w-72 bg-gray-950 border-l border-gray-800 overflow-y-auto">
       <div className="p-4 border-b border-gray-800">
         <h3 className="text-sm font-medium mb-4">Model</h3>
         <div className="mb-4">
-          <select
-            value={currentModel}
-            onChange={(e) => setCurrentModel(e.target.value)}
-            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <Select 
+            value={currentModel} 
+            onValueChange={setCurrentModel}
           >
-            <option>Cosmos Pro 1.5</option>
-            <option>GPT-4</option>
-            <option>Claude 3</option>
-          </select>
+            <SelectTrigger className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <SelectValue placeholder="Select a model" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-800 border border-gray-700">
+              {modelOptions.map((provider) => (
+                <SelectGroup key={provider.provider}>
+                  <SelectLabel className="text-gray-400">{provider.provider}</SelectLabel>
+                  {provider.models.map((model) => (
+                    <SelectItem key={model} value={model}>
+                      {model}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <h3 className="text-sm font-medium mb-2">Temperature</h3>
@@ -55,6 +121,74 @@ const SettingsPanel = ({
             <span>Creative</span>
           </div>
         </div>
+
+        <button 
+          className="text-sm text-blue-500 hover:text-blue-400 transition-colors mt-2"
+          onClick={() => setShowApiConfig(!showApiConfig)}
+        >
+          {showApiConfig ? "Hide API Configuration" : "Configure API Keys"}
+        </button>
+
+        {showApiConfig && (
+          <div className="mt-4 space-y-3">
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">Google AI API Key</label>
+              <input 
+                type="password"
+                placeholder="Enter Gemini API key" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">Google Vertex AI Key</label>
+              <input 
+                type="password" 
+                placeholder="For Claude/Anthropic models"
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">Azure OpenAI Endpoint</label>
+              <input 
+                type="text"
+                placeholder="Azure endpoint URL" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">Azure API Key</label>
+              <input 
+                type="password"
+                placeholder="Azure OpenAI API key" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">AWS Access Key ID</label>
+              <input 
+                type="text"
+                placeholder="AWS Access Key" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">AWS Secret Access Key</label>
+              <input 
+                type="password"
+                placeholder="AWS Secret Key" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-gray-400">AWS Region</label>
+              <input 
+                type="text"
+                placeholder="e.g. us-east-1" 
+                className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="p-4">
@@ -80,16 +214,24 @@ const SettingsPanel = ({
       <div className="p-4 border-t border-gray-800">
         <h3 className="text-sm font-medium mb-4">API Keys</h3>
         <div className="flex justify-between items-center mb-2">
+          <span className="text-sm">Google AI (Gemini)</span>
+          <span className="text-xs text-gray-500">Not set</span>
+        </div>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm">Google Vertex AI</span>
+          <span className="text-xs text-gray-500">Not set</span>
+        </div>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm">Azure OpenAI</span>
+          <span className="text-xs text-gray-500">Not set</span>
+        </div>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm">AWS Bedrock</span>
+          <span className="text-xs text-gray-500">Not set</span>
+        </div>
+        <div className="flex justify-between items-center mb-2">
           <span className="text-sm">OpenAI API</span>
           <span className="text-xs text-green-500">Connected</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">Claude API</span>
-          <span className="text-xs text-gray-500">Not set</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm">Together API key</span>
-          <span className="text-xs text-gray-500">Not set</span>
         </div>
       </div>
     </div>
